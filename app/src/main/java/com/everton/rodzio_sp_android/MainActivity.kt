@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             fun updatelabel() {
-                var meuFormato = "dd/MM/YY"
+                var meuFormato = "dd/MM/yyyy"
                 var sdf = SimpleDateFormat(meuFormato, Locale.FRANCE)
                 editTextCalendario.setText(sdf.format(calendar.time))
 
@@ -71,6 +71,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        fun verificaRod(placa: String, dia: Int) {
+            var final = placa[5].toInt()
+            var yRodizio = "Seu carro está no rodízio"
+
+            if ((dia == 5) || (dia == 6)) {
+                textViewResultado.text = "Não há rodízio nos fins de semana"
+            } else if ((dia == 0) && (final == 1) || (final == 2)) {
+                textViewResultado.text = yRodizio
+            } else if ((dia == 1) && (final == 3) || (final == 4)) {
+                textViewResultado.text = yRodizio
+            } else if ((dia == 2) && (final == 5) || (final == 6)) {
+                textViewResultado.text = yRodizio
+            } else if ((dia == 3) && (final == 7) || (final == 8)) {
+                textViewResultado.text = yRodizio
+            } else if ((dia == 4) && (final == 9) || (final == 0)) {
+                textViewResultado.text = yRodizio
+            } else {
+                textViewResultado.text = "Seu carro não está no rodízio"
+            }
+        }
+
+
 
         button.setOnClickListener {
             var placa22 = editTextPlaca.text.toString()
@@ -80,6 +102,26 @@ class MainActivity : AppCompatActivity() {
             } else {
                 textViewValidade.text = "Padrão Antigo"
             }
+            var placaFunc = placa.toString()
+
+            /*val c = Calendar.getInstance()
+            var format1 = SimpleDateFormat("dd/MM/yyyy")
+            var dt1: Date = format1.parse(c.toString())
+            c.time = dt1
+            var dataFunc = dt1*/
+
+
+
+
+            var input_date = editTextCalendario.text
+            var format1 = SimpleDateFormat("dd/MM/yyyy")
+            var dt1: Date = format1.parse(input_date)
+            var format2 = SimpleDateFormat("EEEE")
+            var finalDay = format2.format(dt1)
+
+            verificaRod(placaFunc, finalDay)
+
+
 
 
         }
