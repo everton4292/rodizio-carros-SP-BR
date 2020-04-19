@@ -2,18 +2,24 @@ package com.everton.rodzio_sp_android
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.ColorMatrix
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.AllCaps
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.rtoshiro.util.format.SimpleMaskFormatter
 import com.github.rtoshiro.util.format.text.MaskTextWatcher
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
+import java.time.DayOfWeek
 import java.util.*
+import java.util.Calendar.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(supportaction)
 
         editTextPlaca.setFilters(arrayOf<InputFilter>(AllCaps()))
         editTextPlaca.filters += InputFilter.LengthFilter(7)
@@ -32,13 +39,13 @@ class MainActivity : AppCompatActivity() {
         editTextPlaca.addTextChangedListener(maskTextWatcherPlaca)
 
 
-        val calendar = Calendar.getInstance()
+        val calendar = getInstance()
         val dateSetListener = object : OnDateSetListener {
 
             override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
-                calendar[Calendar.YEAR] = year
-                calendar[Calendar.MONTH] = month
-                calendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+                calendar[YEAR] = year
+                calendar[MONTH] = month
+                calendar[DAY_OF_MONTH] = dayOfMonth
                 updatelabel()
             }
 
@@ -53,9 +60,9 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(view: View) {
                 DatePickerDialog(
                     this@MainActivity, dateSetListener,
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH)
+                    calendar.get(YEAR),
+                    calendar.get(MONTH),
+                    calendar.get(DAY_OF_MONTH)
                 ).show()
 
             }
@@ -71,57 +78,75 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        fun verificaRod(placa: String, dia: Int) {
-            var final = placa[5].toInt()
+        fun verificaRod(editTextPlaca: String, dia: String) {
+            var final = editTextPlaca[6].toString()
+            var sunday = "Sunday"
+            var monday = "Monday"
+            var tuesday = "Tuesday"
+            var wednesday = "Wednesday"
+            var thursday = "Thursday"
+            var friday = "Friday"
+            var saturday = "Saturday"
             var yRodizio = "Seu carro está no rodízio"
+            var nRodizio = "Seu carro não está no rodízio"
 
-            if ((dia == 5) || (dia == 6)) {
+
+            if ((dia == saturday) || (dia == sunday)) {
                 textViewResultado.text = "Não há rodízio nos fins de semana"
-            } else if ((dia == 0) && (final == 1) || (final == 2)) {
+            } else if ((dia == monday) && ((final == "1") || (final == "2"))) {
                 textViewResultado.text = yRodizio
-            } else if ((dia == 1) && (final == 3) || (final == 4)) {
+                textViewResultado.setTextColor(Color.RED)
+            } else if ((dia == tuesday) && ((final == "3") || (final == "4"))) {
                 textViewResultado.text = yRodizio
-            } else if ((dia == 2) && (final == 5) || (final == 6)) {
+                textViewResultado.setTextColor(Color.RED)
+            } else if ((dia == wednesday) && ((final == "5") || (final == "6"))) {
                 textViewResultado.text = yRodizio
-            } else if ((dia == 3) && (final == 7) || (final == 8)) {
+                textViewResultado.setTextColor(Color.RED)
+            } else if ((dia == thursday) && ((final == "7") || (final == "8"))) {
                 textViewResultado.text = yRodizio
-            } else if ((dia == 4) && (final == 9) || (final == 0)) {
+                textViewResultado.setTextColor(Color.RED)
+            } else if ((dia == friday) && ((final == "9") || (final == "0"))) {
                 textViewResultado.text = yRodizio
+                textViewResultado.setTextColor(Color.RED)
             } else {
-                textViewResultado.text = "Seu carro não está no rodízio"
+                textViewResultado.text = nRodizio
+                textViewResultado.setTextColor(Color.BLUE)
             }
         }
 
-
-
         button.setOnClickListener {
             var placa22 = editTextPlaca.text.toString()
+            if (placa22.isNullOrEmpty()) {
+                Toast.makeText(this, "Placa inválida", Toast.LENGTH_LONG)
+                    .show()
+                return@setOnClickListener
+            }
             var checkIfMercosul = isValidNumber(placa22[4].toString())
             if (checkIfMercosul == false) {
                 textViewValidade.text = "Padrão Mercosul"
             } else {
                 textViewValidade.text = "Padrão Antigo"
             }
-            var placaFunc = placa.toString()
-
-            /*val c = Calendar.getInstance()
-            var format1 = SimpleDateFormat("dd/MM/yyyy")
-            var dt1: Date = format1.parse(c.toString())
-            c.time = dt1
-            var dataFunc = dt1*/
 
 
+            val input_date = editTextCalendario.text
+            val format1 = SimpleDateFormat("dd/MM/yyyy")
+            if (input_date.isNullOrEmpty()){
+                Toast.makeText(this, "Data inválida", Toast.LENGTH_LONG)
+                    .show()
+                return@setOnClickListener
+            }
+            val dt1 = format1.parse(input_date.toString())
+            val format2 = SimpleDateFormat("EEEE")
+            val finalDay: String = format2.format(dt1)
 
 
-            var input_date = editTextCalendario.text
-            var format1 = SimpleDateFormat("dd/MM/yyyy")
-            var dt1: Date = format1.parse(input_date)
-            var format2 = SimpleDateFormat("EEEE")
-            var finalDay = format2.format(dt1)
-
-            verificaRod(placaFunc, finalDay)
-
-
+            var placaFunc = editTextPlaca.text.toString()
+            try {
+                verificaRod(placaFunc, finalDay)
+            } catch (err: NumberFormatException) {
+                textViewResultado.text = "erro"
+            }
 
 
         }
