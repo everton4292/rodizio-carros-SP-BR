@@ -25,7 +25,7 @@
 
 # Images
 
-![Mainr](https://i.imgur.com/I7yYZeC.png)  ![Mainr2](https://i.imgur.com/pq6QYvU.png)
+![Mainr](https://i.imgur.com/kWjLusE.png)  ![Mainr2](https://i.imgur.com/FsYYZhB.png)
 
 ## How you can help
 * Fork this repository and create a branch: git checkout -b featureName 
