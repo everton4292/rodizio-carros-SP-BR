@@ -2,9 +2,7 @@ package com.everton.rodzio_sp_android
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.ColorMatrix
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.AllCaps
@@ -13,17 +11,17 @@ import android.view.View.OnClickListener
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.github.rtoshiro.util.format.SimpleMaskFormatter
 import com.github.rtoshiro.util.format.text.MaskTextWatcher
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
 import java.util.*
 import java.util.Calendar.*
 
 
 class MainActivity : AppCompatActivity() {
-
+    lateinit var model: ViewModelSp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,7 +30,8 @@ class MainActivity : AppCompatActivity() {
         editTextPlaca.setFilters(arrayOf<InputFilter>(AllCaps()))
         editTextPlaca.filters += InputFilter.LengthFilter(7)
 
-
+        this.model = ViewModelProvider(this).get(ViewModelSp::class.java)
+        val editTextPlacaFunc = editTextPlaca.text.toString()
         val placa = editTextPlaca
         val simpleMaskFormatterPlaca = SimpleMaskFormatter("LLLNANN")
         val maskTextWatcherPlaca = MaskTextWatcher(placa, simpleMaskFormatterPlaca)
@@ -69,50 +68,6 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        fun isValidNumber(str: String): Boolean {
-            return try {
-                str.toDouble()
-                true
-            } catch (e: NumberFormatException) {
-                false
-            }
-        }
-
-        fun verificaRod(editTextPlaca: String, dia: String) {
-            var final = editTextPlaca[6].toString()
-            var sunday = "Sunday"
-            var monday = "Monday"
-            var tuesday = "Tuesday"
-            var wednesday = "Wednesday"
-            var thursday = "Thursday"
-            var friday = "Friday"
-            var saturday = "Saturday"
-            var yRodizio = "Seu carro está no rodízio"
-            var nRodizio = "Seu carro não está no rodízio"
-
-
-            if ((dia == saturday) || (dia == sunday)) {
-                textViewResultado.text = "Não há rodízio nos fins de semana"
-            } else if ((dia == monday) && ((final == "1") || (final == "2"))) {
-                textViewResultado.text = yRodizio
-                textViewResultado.setTextColor(Color.RED)
-            } else if ((dia == tuesday) && ((final == "3") || (final == "4"))) {
-                textViewResultado.text = yRodizio
-                textViewResultado.setTextColor(Color.RED)
-            } else if ((dia == wednesday) && ((final == "5") || (final == "6"))) {
-                textViewResultado.text = yRodizio
-                textViewResultado.setTextColor(Color.RED)
-            } else if ((dia == thursday) && ((final == "7") || (final == "8"))) {
-                textViewResultado.text = yRodizio
-                textViewResultado.setTextColor(Color.RED)
-            } else if ((dia == friday) && ((final == "9") || (final == "0"))) {
-                textViewResultado.text = yRodizio
-                textViewResultado.setTextColor(Color.RED)
-            } else {
-                textViewResultado.text = nRodizio
-                textViewResultado.setTextColor(Color.BLUE)
-            }
-        }
 
         button.setOnClickListener {
             var placa22 = editTextPlaca.text.toString()
@@ -121,29 +76,29 @@ class MainActivity : AppCompatActivity() {
                     .show()
                 return@setOnClickListener
             }
-            var checkIfMercosul = isValidNumber(placa22[4].toString())
-            if (checkIfMercosul == false) {
+            var checkIfMercosul = model.isValidNumber(placa22[4].toString())
+            if (!checkIfMercosul) {
                 textViewValidade.text = "Padrão Mercosul"
             } else {
                 textViewValidade.text = "Padrão Antigo"
             }
 
 
-            val input_date = editTextCalendario.text
+            val inputDate = editTextCalendario.text
             val format1 = SimpleDateFormat("dd/MM/yyyy")
-            if (input_date.isNullOrEmpty()){
+            if (inputDate.isNullOrEmpty()){
                 Toast.makeText(this, "Data inválida", Toast.LENGTH_LONG)
                     .show()
                 return@setOnClickListener
             }
-            val dt1 = format1.parse(input_date.toString())
+            val dt1 = format1.parse(inputDate.toString())
             val format2 = SimpleDateFormat("EEEE")
             val finalDay: String = format2.format(dt1)
 
 
             var placaFunc = editTextPlaca.text.toString()
             try {
-                verificaRod(placaFunc, finalDay)
+                model.verificaRod(dia = finalDay, textViewResultado = textViewResultado, editTextPlaca = placaFunc)
             } catch (err: NumberFormatException) {
                 textViewResultado.text = "erro"
             }
