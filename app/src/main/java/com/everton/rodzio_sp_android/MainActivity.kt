@@ -2,6 +2,7 @@ package com.everton.rodzio_sp_android
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.graphics.Color.*
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.AllCaps
@@ -10,6 +11,7 @@ import android.view.View.OnClickListener
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.github.rtoshiro.util.format.SimpleMaskFormatter
 import com.github.rtoshiro.util.format.text.MaskTextWatcher
@@ -21,7 +23,7 @@ import java.util.Calendar.*
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: ViewModelSp by lazy {
-        ViewModelProviders.of(this).get(ViewModelSp::class.java)
+        ViewModelProvider(this).get(ViewModelSp::class.java)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +108,13 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.resultadoDoRodizio.observe(this, androidx.lifecycle.Observer {
             result1 -> textViewResultado.text = result1.mensagem
+            if(result1.mensagem == "Seu carro está no rodízio") {
+                textViewResultado.setTextColor(RED)
+            } else if (result1.mensagem == "Seu carro não está no rodízio") {
+                textViewResultado.setTextColor(BLUE)
+            } else {
+                textViewResultado.setTextColor(BLACK)
+            }
         })
     }
 }

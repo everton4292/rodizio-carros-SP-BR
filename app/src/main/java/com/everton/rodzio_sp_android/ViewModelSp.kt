@@ -31,12 +31,13 @@ class ViewModelSp : ViewModel() {
 
 
         when {
-            (dia == resultadoText.saturday) || (dia == resultadoText.sunday) -> {
+            (dia == resultadoText.saturday) || (dia == resultadoText.sunday.toString()) -> {
                 resultadoText.mensagem = "Não há rodízio nos fins de semana"
             }
 
-            (dia == resultadoText.monday) && ((final == "1") || (final == "2")) -> {
+            (dia == resultadoText.monday.toString()) && ((final == "1") || (final == "2")) -> {
                 resultadoText.mensagem = "Seu carro está no rodízio"
+
 
             }
 
