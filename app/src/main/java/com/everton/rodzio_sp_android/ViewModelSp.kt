@@ -1,28 +1,32 @@
 package com.everton.rodzio_sp_android
 
-import android.graphics.Color
+
 import android.text.Editable
-import android.widget.TextView
-import androidx.core.graphics.toColorInt
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
-import java.util.*
+
 
 class ViewModelSp : ViewModel() {
 
     fun isValidNumber(str: String): Boolean {
+
         return try {
             str.toDouble()
             true
-        } catch (e: NumberFormatException) {
+        } catch (e: Exception) {
             false
         }
+
     }
 
 
     val resultadoDoRodizio = MutableLiveData<Result>()
+    val errorPlaca = MutableLiveData<Unit>()
+    val errorData = MutableLiveData<Unit>()
+
+
+
 
 
     fun verificaRod(editTextPlaca: String, dia: String) {
