@@ -6,15 +6,24 @@ import android.text.Editable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-
+/**
+ * ViewModel class, following Android jetpack orientations
+ *
+ */
 class ViewModelSp : ViewModel() {
+
+    /**
+     * Function for verifying if the "4" array character from the license plate is a number or a
+     * letter. This input is alphanumerical, and indicates if the license plate is and old model(number),
+     * or a new model(letter).
+     */
 
     fun isValidNumber(str: String): Boolean {
 
         return try {
             str.toDouble()
             true
-        } catch (e: Exception) {
+        } catch (e: NumberFormatException) {
             false
         }
 
@@ -22,27 +31,26 @@ class ViewModelSp : ViewModel() {
 
 
     val resultadoDoRodizio = MutableLiveData<Result>()
-    val errorPlaca = MutableLiveData<Unit>()
-    val errorData = MutableLiveData<Unit>()
 
 
-
-
-
+/**
+* Main function for veryfing if the user's car is affirmative for the rotation system. It uses the
+* license plate and day input, the function verifies the "6" array digit from the license place input
+* and matches it with the day of the week.
+*
+*/
     fun verificaRod(editTextPlaca: String, dia: String) {
         var final = editTextPlaca[6].toString()
         var resultadoText = Result()
 
 
         when {
-            (dia == resultadoText.saturday) || (dia == resultadoText.sunday.toString()) -> {
+            (dia == resultadoText.saturday) || (dia == resultadoText.sunday) -> {
                 resultadoText.mensagem = "Não há rodízio nos fins de semana"
             }
 
-            (dia == resultadoText.monday.toString()) && ((final == "1") || (final == "2")) -> {
+            (dia == resultadoText.monday) && ((final == "1") || (final == "2")) -> {
                 resultadoText.mensagem = "Seu carro está no rodízio"
-
-
             }
 
             (dia == resultadoText.tuesday) && ((final == "3") || (final == "4")) -> {
