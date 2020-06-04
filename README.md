@@ -1,5 +1,7 @@
 # Car rotation for São Paulo
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ffc6c59ef4e1489582a11d4bf84afdb3)](https://app.codacy.com/manual/everton4292/rodizio-carros-SP-BR?utm_source=github.com&utm_medium=referral&utm_content=everton4292/rodizio-carros-SP-BR&utm_campaign=Badge_Grade_Dashboard)
+
  Android App created for the purpose of study
 
 ## App for checking if your car is in the car rotation system in São Paulo - Brazil. Original ideia by @guoliv3ira web project in [this](https://github.com/guoliv3ira/rodizio-sp) repository
