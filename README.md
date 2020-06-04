@@ -9,12 +9,12 @@
  alternate-day travel restriction. The scheme was first implemented in 1995 as a trial on a voluntary basis, and then as a mandatory restriction implemented in August 1996 
  to mitigate air pollution, and thereafter made permanent in June 1997 to relieve traffic congestion. The driving restriction applies to passenger cars and commercial vehicles, and it is based on the last digit
  of the licence plate. Two numbers are restricted to travel every day between 7 a.m. to 10 a.m. and 5 p.m. to 8 p.m. from Monday through Friday. (Wikipedia, 2020)
-*  Monday: 1 and 2 last digits
-*  Tuesday: 3 and 4 last digits
-*  Wednesday: 5 and 6 last digits
-*  Thursday: 7 and 8 last digits
-*  Friday: 9 and 0 last digits
-*  Saturday and Sunday: The system doesn't apply in the weekends
+*   Monday: 1 and 2 last digits
+*   Tuesday: 3 and 4 last digits
+*   Wednesday: 5 and 6 last digits
+*   Thursday: 7 and 8 last digits
+*   Friday: 9 and 0 last digits
+*   Saturday and Sunday: The system doesn't apply in the weekends
 
 ## Technology
 ### The project was made using these technologies
