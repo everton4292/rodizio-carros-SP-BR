@@ -40,8 +40,8 @@ class ViewModelSp : ViewModel() {
 *
 */
     fun verificaRod(editTextPlaca: String, dia: String) {
-        var final = editTextPlaca[6].toString()
-        var resultadoText = Result()
+        val final = editTextPlaca[6].toString()
+        val resultadoText = Result()
 
 
         when {

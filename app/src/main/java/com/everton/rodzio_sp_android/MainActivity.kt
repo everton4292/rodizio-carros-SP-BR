@@ -56,8 +56,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             fun updatelabel() {
-                var meuFormato = "dd/MM/yyyy"
-                var sdf = SimpleDateFormat(meuFormato, Locale.FRANCE)
+                val meuFormato = "dd/MM/yyyy"
+                val sdf = SimpleDateFormat(meuFormato, Locale.FRANCE)
                 editTextCalendario.setText(sdf.format(calendar.time))
 
             }
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         button.setOnClickListener {
-            var placaDigitada = editTextPlaca.text.toString()
+            val placaDigitada = editTextPlaca.text.toString()
 
             if (placaDigitada.isNullOrEmpty() || placaDigitada.length < 7) {
                 Toast.makeText(this, "Placa inválida", Toast.LENGTH_LONG)
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            var checkIfMercosul = viewModel.isValidNumber(placaDigitada[4].toString())
+            val checkIfMercosul = viewModel.isValidNumber(placaDigitada[4].toString())
 
             if (!checkIfMercosul) {
                 textViewValidade.text = "Padrão Mercosul"
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             val finalDay: String = formatFinalDay.format(dt1)
 
 
-            var placaFunc = editTextPlaca.text.toString()
+            val placaFunc = editTextPlaca.text.toString()
             try {
                 viewModel.verificaRod(dia = finalDay, editTextPlaca = placaFunc)
             } catch (err: NumberFormatException) {
